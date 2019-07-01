@@ -100,6 +100,7 @@
 
 (require 'init-ui)
 (require 'init-edit)
+(require 'init-evil)
 (require 'init-ivy)
 (require 'init-company)
 (require 'init-yasnippet)
@@ -123,6 +124,7 @@
 
 (require 'init-utils)
 
+(require 'init-chinese)
 ;; Programming
 (require 'init-vcs)
 (require 'init-flycheck)

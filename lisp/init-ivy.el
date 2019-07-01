@@ -330,7 +330,18 @@
     :init
     (push '(swiper . ivy--regex-pinyin) ivy-re-builders-alist)
     (push '(swiper-all . ivy--regex-pinyin) ivy-re-builders-alist)
-    (push '(swiper-isearch . ivy--regex-pinyin) ivy-re-builders-alist)))
+    (push '(swiper-isearch . ivy--regex-pinyin) ivy-re-builders-alist))
+
+  (pcase centaur-ivy-style
+    ('ido
+     (define-key ivy-minibuffer-map (kbd "<return>") 'ivy-alt-done)
+     (define-key ivy-minibuffer-map (kbd "C-f") 'eh-ivy-open-current-typed-path)
+     ;; You can enter endless TAB without select anything!
+     (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
+     (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-immediate-done))
+    ('normal
+     nil))
+  )
 
 ;; More friendly display transformer for Ivy
 (use-package ivy-rich

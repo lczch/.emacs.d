@@ -94,6 +94,12 @@ If Non-nil, use dashboard, otherwise will restore previous session."
   "Enable the init benchmark or not."
   :type 'boolean)
 
+(defcustom centaur-ivy-style 'ido
+  "Set ivy's style."
+  :type `(choice
+          (const :tag "Ido Style" 'ido)
+          (const :tag "Normal" 'normal)))
+
 ;; Load `custom-file'
 ;; If it doesn't exist, copy from the template, then load it.
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
