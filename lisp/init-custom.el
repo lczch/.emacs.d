@@ -100,6 +100,12 @@ If Non-nil, use dashboard, otherwise will restore previous session."
           (const :tag "Ido Style" 'ido)
           (const :tag "Normal" 'normal)))
 
+(defcustom centaur-edit-style 'vim
+  "Choose edit style, vim or emacs"
+  :type `(choice
+          (const :tag "Vim" 'vim)
+          (const :tag "Emacs" 'emacs)))
+
 ;; Load `custom-file'
 ;; If it doesn't exist, copy from the template, then load it.
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))

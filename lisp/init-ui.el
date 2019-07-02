@@ -59,7 +59,6 @@
 
 ;; Mode-line
 (use-package doom-modeline
-  :disabled t
   :hook (after-init . doom-modeline-mode)
   :init
   ;; prevent flash of unstyled modeline at startup

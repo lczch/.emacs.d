@@ -23,7 +23,7 @@
 
 ;;; Commentary:
 ;;
-;; Initialize vim like utilities.
+;; Initialize vim-like utilities.
 ;;
 
 ;;; Code:
@@ -33,7 +33,8 @@
 (use-package evil
   :init
   (use-package undo-tree
-    :load-path (lambda () (expand-file-name "site-lisp/evil/lib" user-emacs-directory))
+    :demand t
+    :load-path "site-lisp/evil/lib"
     :config
     (setq undo-limit 800000))
 
@@ -108,6 +109,35 @@
     (define-key evil-motion-state-map
       (read-kbd-macro evil-toggle-key) 'evil-emacs-state))
 
+  ;; (when (featurep 'evil-leader) (message "hehe"))
+  (use-package evil-leader
+    :demand t
+    :config
+    (global-evil-leader-mode)
+    (setq evil-leader/leader ",")
+    )
+
+  ;; evil-nerd-commenter
+  (use-package evil-nerd-commenter
+    :demand t
+    :config
+    (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+    (evil-leader/set-key
+      "ci" 'evilnc-comment-or-uncomment-lines
+      "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
+      ;; "cc" 'evilnc-copy-and-comment-lines
+      ;; "cp" 'evilnc-comment-or-uncomment-paragraphs
+      ;; "cr" 'comment-or-uncomment-region
+      ;; "cv" 'evilnc-toggle-invert-comment-line-by-line
+      ;; "\\" 'evilnc-comment-operator       ; if you prefer backslash key
+      )
+    )
+
+  ;; evil-matchit
+  (use-package evil-matchit
+    :demand t
+    :config
+    (global-evil-matchit-mode 1))
   ;; change mode-line color by evil state
   (let ((default-color (cons (face-background 'mode-line)
                              (face-foreground 'mode-line))))
@@ -121,34 +151,13 @@
                   (set-face-background 'mode-line (car color))
                   (set-face-foreground 'mode-line (cdr color))))))
 
-  (use-package evil-leader
-    :config
-    )
-
-  (global-evil-leader-mode)
-  (setq evil-leader/leader ",")
-  ;; evil-nerd-commenter
-  (use-package evil-nerd-commenter
-    :config
-    )
-
-  (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
-  (evil-leader/set-key
-    "ci" 'evilnc-comment-or-uncomment-lines
-    "ll" 'evilnc-quick-comment-or-uncomment-to-the-line
-    ;; "cc" 'evilnc-copy-and-comment-lines
-    ;; "cp" 'evilnc-comment-or-uncomment-paragraphs
-    ;; "cr" 'comment-or-uncomment-region
-    ;; "cv" 'evilnc-toggle-invert-comment-line-by-line
-    ;; "\\" 'evilnc-comment-operator       ; if you prefer backslash key
-    )
-  ;; evil-matchit
-  (use-package evil-matchit
-    :config
-    (global-evil-matchit-mode 1))
   )
 
-(evil-mode 1)
+(pcase centaur-edit-style
+  ('vim
+   (evil-mode 1))
+  ('emacs
+   nil))
 
 (provide 'init-evil)
 
