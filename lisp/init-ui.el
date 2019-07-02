@@ -59,6 +59,7 @@
 
 ;; Mode-line
 (use-package doom-modeline
+  :disabled t
   :hook (after-init . doom-modeline-mode)
   :init
   ;; prevent flash of unstyled modeline at startup
@@ -67,7 +68,10 @@
   :config
   (setq doom-modeline-major-mode-color-icon t
         doom-modeline-minor-modes nil
-        doom-modeline-mu4e nil))
+        doom-modeline-mu4e nil
+        doom-modeline-lsp nil
+        doom-modeline-irc nil))
+
 
 (use-package hide-mode-line
   :hook (((completion-list-mode completion-in-region-mode) . hide-mode-line-mode)))
@@ -317,6 +321,5 @@
            ("M-S-<return>" . toggle-frame-fullscreen))
 
 (provide 'init-ui)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-ui.el ends here
