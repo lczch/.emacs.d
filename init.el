@@ -98,13 +98,16 @@
 (require 'init-basic)
 (require 'init-funcs)
 
-(require 'init-ui)
+;; (require 'init-ui)
+(require 'init-locales)
+(require 'init-gui-frame)
 (require 'init-edit)
 (require 'init-evil)
 (require 'init-ivy)
 (require 'init-company)
 (require 'init-yasnippet)
 
+(require 'init-minibuff)
 (require 'init-calendar)
 (require 'init-dashboard)
 (require 'init-dired)
@@ -131,7 +134,7 @@
 (require 'init-projectile)
 (require 'init-lsp)
 
-(require 'init-emacs-lisp)
+(require 'init-lisp)
 (require 'init-c)
 (require 'init-go)
 (require 'init-python)

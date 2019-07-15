@@ -35,6 +35,7 @@
 
 ;; Windows/buffers sets shared among frames + save/load.
 (use-package persp-mode
+  :disabled
   :diminish
   :defines ivy-sort-functions-alist
   :commands (get-current-persp persp-contain-buffer-p)
@@ -76,6 +77,7 @@
 
 ;; Integrate `projectile'
 (use-package persp-mode-projectile-bridge
+  :disabled
   :functions (persp-get-by-name
               persp-add-new
               set-persp-parameter

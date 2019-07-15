@@ -76,6 +76,7 @@
   ;; Shows icons
   (use-package all-the-icons-dired
     :diminish
+    :disabled
     :custom-face (all-the-icons-dired-dir-face ((t (:foreground nil))))
     :hook (dired-mode . all-the-icons-dired-mode)
     :config

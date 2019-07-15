@@ -37,6 +37,7 @@
 (when emacs/>=25.2p
   ;; A tree layout file explorer
   (use-package treemacs
+    :disabled
     :defines winum-keymap
     :commands (treemacs-follow-mode
                treemacs-filewatch-mode

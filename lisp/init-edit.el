@@ -66,11 +66,13 @@
 
 ;; Rectangle
 (use-package rect
+  :disabled
   :ensure nil
   :bind (("<C-return>" . rectangle-mark-mode)))
 
 ;; Automatically reload files was modified by external program
 (use-package autorevert
+  :disabled
   :ensure nil
   :diminish
   :hook (after-init . global-auto-revert-mode))
@@ -136,6 +138,7 @@
 
 ;; Minor mode to aggressively keep your code always indented
 (use-package aggressive-indent
+  :disabled
   :diminish
   :hook ((after-init . global-aggressive-indent-mode)
          ;; FIXME: Disable in big files due to the performance issues
@@ -200,9 +203,31 @@
 
 ;; Automatic parenthesis pairing
 (use-package elec-pair
+  :disabled
   :ensure nil
   :hook (after-init . electric-pair-mode)
   :init (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit))
+
+;; smartparens: deal with paired things
+(use-package smartparens
+  :commands (smartparens-mode smartparens-strict-mode turn-on-smartparens-strict-mode)
+  :ensure nil
+  :init
+  (smartparens-global-mode)
+  :config
+  (require 'smartparens-config)
+
+  (setq sp-autoskip-closing-pair 'always)
+  (sp-use-smartparens-bindings)
+
+  (sp-with-modes 'tuareg-mode
+    ;; disable auto insert of "'"
+    (sp-local-pair "'" nil :actions nil)
+    (sp-local-pair "`" nil :actions nil))
+
+  (sp-with-modes 'minibuffer-inactive-mode
+    (sp-local-pair "'" nil :actions nil))
+  )
 
 ;; Edit multiple regions in the same way simultaneously
 (use-package iedit
@@ -237,6 +262,7 @@
 
 ;; Smartly select region, rectangle, multi cursors
 (use-package smart-region
+  :disabled
   :hook (after-init . smart-region-on))
 
 ;; On-the-fly spell checker

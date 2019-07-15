@@ -77,6 +77,7 @@
 
 ;; Resolve diff3 conflicts
 (use-package smerge-mode
+  :disabled ;; hooked in `find-file', high lentency
   :ensure nil
   :diminish
   :commands (smerge-mode

@@ -34,6 +34,71 @@
   (require 'init-custom))
 
 (use-package company
+  :hook (after-init . global-company-mode)
+  :config
+  (setq company-auto-complete nil)
+  (setq company-require-match nil)
+  (setq company-dabbrev-downcase nil)
+  (setq company-dabbrev-ignore-case nil)
+  ;; 原来一直是3, 我觉得2可能更合理一些.
+  (setq company-minimum-prefix-length 2)
+  (setq company-show-numbers t)
+  ;; If I actually get the point, this variable `company-begin-commands` controls
+  ;; what commands of emacs can triger the starting of company.
+  ;; `self-insert-command` means typing IO.
+  ;; (setq company-begin-commands '(self-insert-command))
+  (setq company-idle-delay 0.1)
+
+  (use-package company-statistics
+    :ensure nil
+    :commands (company-statistics-mode))
+  (use-package company-elisp
+    :ensure nil
+    :commands (company-elisp))
+  (use-package company-capf
+    :ensure nil
+    :commands (company-capf))
+  (use-package company-files
+    :ensure nil
+    :commands (company-files))
+  (use-package company-dabbrev
+    :ensure nil
+    :commands (company-dabbrev))
+  (use-package company-math
+    :ensure nil
+    :commands (company-math-symbols-latex
+               company-math-symbols-unicode))
+  
+  ;; use company-statistics to arrange the order of candidates, show more probably selected one to the first
+  ;; 这其实是个没什么用的函数, 还不如直接手写. 每次我都要想backends的语法是什么, 创造了一个DSL, 找事.
+  (defun setup-company-mode (backends)
+    "turn-on company-mode, then make variable company-backends to buffer local, and set it to BACKENDS.
+     Example: for elisp, (setup-company-mode '(company-elisp))"
+    (company-mode 1)
+    (company-statistics-mode)
+    (make-local-variable 'company-backends)
+    (setq company-backends backends))
+  )
+
+;;; useful company-backend
+;;  company-c-headers
+;;  company-elisp
+;;  company-bbdb ;; BBDB stands for The Insidious Big Brother Database – an address book that you can hook into your mail- and newsreader, sync with your mobile device, etc.
+;;  company-nxml
+;;  company-css
+;;  company-eclim
+;;  company-semantic ;; completion backend using CEDET Semantic
+;;  company-clang
+;;  company-xcode
+;;  company-cmake
+;;  company-capf
+;;  (company-dabbrev-code company-gtags company-etags company-keywords)
+;;  company-oddmuse
+;;  company-files
+;;  company-dabbrev ;; this is very useful!
+
+(use-package company
+  :disabled
   :diminish company-mode
   :defines (company-dabbrev-ignore-case company-dabbrev-downcase)
   :commands company-abort

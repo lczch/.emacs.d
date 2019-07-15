@@ -51,6 +51,42 @@
                                       "*Ibuffer*"
                                       "*esh command on file*")))
 
+
+(use-package window-numbering
+  :hook (after-init . window-numbering-mode)
+  :config
+  (custom-set-faces '(window-numbering-face
+                      ((t (:foreground "DeepPink" :underline "DeepPink" :weight bold)))))
+  )
+
+;;----------------------------------------------------------------------------
+;; When splitting window, show (other-buffer) in the new window
+;;----------------------------------------------------------------------------
+(defun split-window-func-with-other-buffer (split-function)
+  (lexical-let ((s-f split-function))
+    (lambda (&optional arg)
+      "Split this window and switch to the new window unless ARG is provided."
+      (interactive "P")
+      (funcall s-f)
+      (let ((target-window (next-window)))
+        (set-window-buffer target-window (other-buffer))
+        (unless arg
+          (select-window target-window))))))
+
+(global-set-key "\C-x2" (split-window-func-with-other-buffer 'split-window-vertically))
+(global-set-key "\C-x3" (split-window-func-with-other-buffer 'split-window-horizontally))
+
+(defun sanityinc/toggle-delete-other-windows ()
+  "Delete other windows in frame if any, or restore previous window config."
+  (interactive)
+  (if (and winner-mode
+           (equal (selected-window) (next-window)))
+      (winner-undo)
+    (delete-other-windows)))
+
+(global-set-key "\C-x1" 'sanityinc/toggle-delete-other-windows)
+
+
 ;; Quickly switch windows
 (use-package ace-window
   :functions (hydra-frame-window/body my-aw-window<)
@@ -222,6 +258,121 @@ _F_ullscreen            _o_ther         _b_alance^^^^          ^ ^         *  /\
           (list-environment-mode :select t :size 0.3 :align 'below :autoclose t)
           (profiler-report-mode :select t :size 0.5 :align 'below)
           (tabulated-list-mode :align 'below))))
+
+(use-package rw-frame-lib
+  :disabled
+  :bind (("C-M-<next>" 'rw/switch-to-next-frame-in-same-monitor)
+         ("C-M-<prior>" 'rw/switch-to-previous-frame-in-same-monitor)
+         ("C-<next>" 'next-buffer)
+         ("C-<prior>" 'previous-buffer))
+  :config
+  (defun rw/lift-frame-in-other-monitor ()
+    "lift emacs-frame in other monitor"
+    (interactive)
+    (let ((cframe (selected-frame))
+          (xframe (rw-select-frame-in-other-monitor)))
+      (select-frame-set-input-focus xframe)
+      (select-frame-set-input-focus cframe)))
+
+  ;; (global-set-key (kbd "<f1>") 'rw/lift-frame-in-other-monitor)
+  ;; (global-set-key (kbd "<f2>") 'pop-to-mark-command)
+
+  (defun rw/switch-to-next-frame-in-same-monitor (&optional frame)
+    (interactive)
+    (let* ((frame (or frame (selected-frame))))
+      (select-frame-set-input-focus (rw-next-frame-in-same-monitor frame))))
+
+  (defun rw/switch-to-previous-frame-in-same-monitor (&optional frame)
+    (interactive)
+    (let* ((frame (or frame (selected-frame))))
+      (select-frame-set-input-focus (rw-previous-frame-in-same-monitor frame))))
+  )
+
+;; Nicer naming of buffers for files with identical names
+(use-package uniquify
+  :demand t
+  :ensure nil
+  :config
+  (setq uniquify-buffer-name-style 'reverse)
+  (setq uniquify-separator " • ")
+  (setq uniquify-after-kill-buffer-p t)
+  (setq uniquify-ignore-buffers-re "^\\*"))
+
+(use-package visual-regexp
+  :commands (vr/query-replace)
+  :init 
+  (evil-leader/set-key
+    "rr" 'vr/query-replace
+    ;; "vm" 'vr/mc-mark
+    ))
+
+(use-package visual-regexp
+  :commands (vr/query-replace)
+  :init 
+  (evil-leader/set-key
+    "rr" 'vr/query-replace
+    ;; "vm" 'vr/mc-mark
+    ))
+
+;; expand-region: increase selected region by semantic units
+(use-package expand-region
+  :config
+  (evil-leader/set-key
+    "xx" 'er/expand-region)
+  
+  (setq expand-region-contract-fast-key "z")
+  (define-key evil-visual-state-map (kbd "v") 'er/expand-region)
+  )
+
+;; save place
+(use-package saveplace
+  :config
+  (setq-default save-place t))
+
+;; Highlight the cursor whenever the window scrolls
+;; beacon: need package "seq"
+(use-package beacon
+  :config
+  (beacon-mode 1))
+
+(use-package browse-kill-ring
+  :config
+  ;; no duplicates
+  (setq browse-kill-ring-display-duplicates nil)
+  ;; preview is annoying
+  (setq browse-kill-ring-show-preview nil)
+  (browse-kill-ring-default-keybindings)
+  (define-key evil-normal-state-map (kbd "M-y") 'browse-kill-ring)
+  ;; hotkeys:
+  ;; n/p => next/previous
+  ;; s/r => search
+  ;; l => filter with regex
+  ;; g => update/refresh
+  )
+
+(global-set-key (kbd "<f12>") 'toggle-debug-on-error)
+
+(evil-leader/set-key
+  "xh" 'mark-whole-buffer
+  "do" 'rw-display-current-buffer-other-frame
+  "eb" 'eval-buffer
+  "rb" 'revert-buffer) 
+
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq history-delete-duplicates t)
+
+;; some basic preferences
+(setq-default buffers-menu-max-size 30
+              case-fold-search t
+              save-interprogram-paste-before-kill t
+              indent-tabs-mode nil
+              mouse-yank-at-point t
+              tooltip-delay 1.5
+              truncate-lines nil
+              truncate-partial-width-windows nil
+              ;; visible-bell has some issue
+              ;; @see https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/issues/9#issuecomment-97848938
+              visible-bell nil)
 
 (provide 'init-window)
 

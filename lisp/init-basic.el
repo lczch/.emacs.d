@@ -35,8 +35,8 @@
   (require 'init-custom))
 
 ;; Personal information
-(setq user-full-name centaur-full-name)
-(setq user-mail-address centaur-mail-address)
+(setq user-full-name "lzh")
+(setq user-mail-address "rice-wine@foxmail")
 
 ;; Key Modifiers
 (cond

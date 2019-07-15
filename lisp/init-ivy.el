@@ -254,7 +254,7 @@
   ;; Integrate yasnippet
   (use-package ivy-yasnippet
     :commands ivy-yasnippet--preview
-    :bind ("C-c C-y" . ivy-yasnippet)
+    :bind ("M-\\" . ivy-yasnippet)
     :config (advice-add #'ivy-yasnippet--preview :override #'ignore))
 
   ;; Select from xref candidates with Ivy
@@ -294,6 +294,7 @@
   ;; Refer to  https://github.com/abo-abo/swiper/issues/919 and
   ;; https://github.com/pengpengxp/swiper/wiki/ivy-support-chinese-pinyin
   (use-package pinyinlib
+    :disabled
     :functions ivy--regex-plus ivy--regex-ignore-order
     :commands pinyinlib-build-regexp-string
     :preface
@@ -345,6 +346,7 @@
 
 ;; More friendly display transformer for Ivy
 (use-package ivy-rich
+  :disabled
   :defines (all-the-icons-icon-alist
             all-the-icons-dir-icon-alist
             bookmark-alist)

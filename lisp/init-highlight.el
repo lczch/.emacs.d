@@ -158,6 +158,7 @@
 
 ;; Highlight uncommitted changes
 (use-package diff-hl
+  :disabled t
   :defines (diff-hl-margin-symbols-alist desktop-minor-mode-table)
   :commands diff-hl-magit-post-refresh
   :custom-face
